@@ -3,19 +3,35 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #504CB9;
+  --secondary: #FA7274;
+  --accent-blue: #7272FA;
+  --accent-green: #4CB983;
+  --accent-red: #b94c4c;
+  --black: #1e1e1e;
+  --text-half-opacity: #1e1e1e83;
+  --white: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
+.h1{
+  @apply text-white dark:text-white text-[48px] leading-[60px] font-bold;
+}
+
+.body-1{
+  @apply text-white dark:text-white text-[16px];
+}
+
+.auth-form {
+  @apply flex max-h-[800px] w-full max-w-[580px] flex-col justify-center space-y-6 transition-all lg:h-full lg:space-y-8 !important;
+}
+
+.form-title{
+  @apply text-black dark:text-white text-[36px] font-bold mb-4;
+}
+
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --radius: 0.5rem;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
