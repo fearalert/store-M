@@ -22,11 +22,11 @@
 }
 
 .auth-form {
-  @apply flex max-h-[800px] w-full max-w-[580px] flex-col justify-center space-y-6 transition-all lg:h-full lg:space-y-8 !important;
+  @apply flex max-h-[800px] w-full max-w-[580px] flex-col justify-center space-y-4 transition-all lg:h-full lg:space-y-2 !important;
 }
 
 .form-title{
-  @apply text-black dark:text-white text-[36px] font-bold mb-4;
+  @apply text-black dark:text-white text-[36px] font-bold mb-8;
 }
 
 @layer base {

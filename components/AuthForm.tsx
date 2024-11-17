@@ -18,17 +18,41 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react"
 
 import Link from "next/link"
+import { createUserAccount, loginUser } from "@/lib/actions/user.action"
+import OTPModal from "./OtpModal"
+import { passwordRegex } from "@/constants/constants"
+
 type AuthFormtype = "login" | "register"
 
-const authFormSchema = (type: AuthFormtype) => {
-    return z.object({
+const authFormSchema = (type: "register" | "login") => {
+  return z
+    .object({
       email: z.string().email(),
       fullName:
         type === "register"
-          ? z.string().min(2).max(50)
+          ? z.string().min(2, "Full name must be at least 2 characters.").max(30, "Full name must be at most 30 characters.")
           : z.string().optional(),
-    });
-  }
+      password: z
+        .string()
+        .min(6, "Password must be at least 6 characters.")
+        .max(16, "Password must be at most 16 characters.")
+        .regex(
+          passwordRegex,
+          "Password must contain at least one letter, one number, and one special character."
+        ),
+      confirmPassword:
+        type === "register"
+          ? z.string().min(6, "Password must be at least 6 characters.")
+          : z.string().optional(),
+    })
+    .refine(
+      (data) => type !== "register" || data.password === data.confirmPassword,
+      {
+        message: "Passwords must match.",
+        path: ["confirmPassword"],
+      }
+    );
+};
 
 const AuthForm = ({type}: {type: AuthFormtype}) => {
 
@@ -43,30 +67,41 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
         defaultValues: {
           email: "",
           fullName: "",
+          password: "",
+          confirmPassword: ""
         },
     });
      
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        setIsLoading(true);
-        setError("");
-    
-        // try {
-        //   const user =
-        //     type === "login"
-        //       ? await createAccount({
-        //           fullName: values.fullName || "",
-        //           email: values.email,
-        //         })
-        //       : await signInUser({ email: values.email });
-    
-        //   setAccountId(user.accountId);
-        // } catch {
-        //   setError("Failed to create account. Please try again.");
-        // } finally {
-        //   setIsLoading(false);
-        // }
-      };
-    
+      setIsLoading(true);
+      setError("");
+  
+      try {
+        if (type === "register") {
+          const user = await createUserAccount({
+            fullName: values.fullName || "",
+            email: values.email,
+            password: values.password,
+          });
+          setAccountId(user.accountId);
+          console.log("Account ID:", user.accountId);
+        } else if (type === "login") {
+          const loginData = await loginUser({
+            email: values.email,
+            password: values.password,
+          });
+          console.log("Login Successful:", loginData);
+        }
+      } catch (error) {
+        setError(
+          type === "register"
+            ? "Failed to create account. Please try again."
+            : "Failed to login. Please check your credentials and try again."
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
     return (
     <>
         <Form {...form}>
@@ -80,7 +115,7 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <div className="flex w-full h-20 flex-col justify-center rounded-xl">
+                  <div className="flex w-full flex-col justify-center rounded-xl">
                     <FormLabel className="text-text-half py-2 body-2 w-full !important">Full Name</FormLabel>
                     <FormControl>
                       <Input
@@ -101,7 +136,7 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                  <div className="flex w-full h-20 flex-col justify-center rounded-xl">
+                  <div className="flex w-full flex-col justify-center rounded-xl">
                     <FormLabel className="text-text-half py-2 body-2 w-full !important">Email</FormLabel>
                     <FormControl>
                       <Input
@@ -116,6 +151,51 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
             )}
           />
 
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                  <div className="flex w-full flex-col justify-center rounded-xl">
+                    <FormLabel className="text-text-half py-2 body-2 w-full !important">Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your password"
+                        className="border w-full shadow-none px-2 placeholder:text-text-half !important"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage className="text-accent-red ml-4 !important" />
+                </FormItem>
+            )}
+          />
+
+          {type === "register" && (
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex w-full flex-col justify-center rounded-xl">
+                    <FormLabel className="text-text-half py-2 body-2 w-full !important">Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Re-Enter your password"
+                        className="border w-full shadow-none px-2 placeholder:text-text-half !important"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage className="text-accent-red ml-2 !important" />
+                </FormItem>
+              )}
+            />
+          )}
+
+          <br />
           <Button
             type="submit"
             disabled={isLoading}
@@ -143,6 +223,9 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
           </div>
         </form>
       </Form>
+      {accountId && (
+        <OTPModal email={form.getValues("email")} accountId={JSON.stringify(accountId)} />
+      )}
     </>
   );
 }

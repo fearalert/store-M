@@ -37,33 +37,33 @@ export const createSessionClient = async () => {
     client.setSession(session.value);
 
     return {
-        getAccount() {
-            return new Account(client);
+        get account() {
+          return new Account(client);
         },
-        getDatabases(){
-            return new Databases(client);
-        }
-    }
-
-}
-
+        get databases() {
+          return new Databases(client);
+        },
+    };
+};
+    
 export const createAdminClient = async () => {
-    const client = new Client().setEndpoint(appwriteConfig.endpointUrl)
-                            .setProject(appwriteConfig.projectId)
-                            .setKey(appwriteConfig.secretKey);
+      const client = new Client()
+        .setEndpoint(appwriteConfig.endpointUrl)
+        .setProject(appwriteConfig.projectId)
+        .setKey(appwriteConfig.secretKey);
     
     return {
-        getAccount(){
-            return new Account(client);
+        get account() {
+          return new Account(client);
         },
-        getDatabases(){
-            return new Databases(client);
+        get databases() {
+          return new Databases(client);
         },
-        getStorage(){
-            return new Storage(client);
+        get storage() {
+          return new Storage(client);
         },
-        getAvatar(){
-            return new Avatars(client);
-        }
-    }
-}
+        get avatars() {
+          return new Avatars(client);
+        },
+    };
+};
