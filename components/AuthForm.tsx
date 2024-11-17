@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
-
 import Link from "next/link"
 import { createUserAccount, loginUser } from "@/lib/actions/user.action"
 import OTPModal from "./OtpModal"
