@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -19,7 +18,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { createUserAccount, loginUser } from "@/lib/actions/user.action"
 import OTPModal from "./OtpModal"
-import { passwordRegex } from "@/constants/constants"
+import { useRouter } from "next/navigation"
 
 type AuthFormtype = "login" | "register"
 
@@ -31,26 +30,26 @@ const authFormSchema = (type: "register" | "login") => {
         type === "register"
           ? z.string().min(2, "Full name must be at least 2 characters.").max(30, "Full name must be at most 30 characters.")
           : z.string().optional(),
-      password: z
-        .string()
-        .min(6, "Password must be at least 6 characters.")
-        .max(16, "Password must be at most 16 characters.")
-        .regex(
-          passwordRegex,
-          "Password must contain at least one letter, one number, and one special character."
-        ),
-      confirmPassword:
-        type === "register"
-          ? z.string().min(6, "Password must be at least 6 characters.")
-          : z.string().optional(),
+      // password: z
+      //   .string()
+      //   .min(6, "Password must be at least 6 characters.")
+      //   .max(16, "Password must be at most 16 characters.")
+      //   .regex(
+      //     passwordRegex,
+      //     "Password must contain at least one letter, one number, and one special character."
+      //   ),
+      // confirmPassword:
+      //   type === "register"
+      //     ? z.string().min(6, "Password must be at least 6 characters.")
+      //     : z.string().optional(),
     })
-    .refine(
-      (data) => type !== "register" || data.password === data.confirmPassword,
-      {
-        message: "Passwords must match.",
-        path: ["confirmPassword"],
-      }
-    );
+    // .refine(
+    //   (data) => type !== "register" || data.password === data.confirmPassword,
+    //   {
+    //     message: "Passwords must match.",
+    //     path: ["confirmPassword"],
+    //   }
+    // );
 };
 
 const AuthForm = ({type}: {type: AuthFormtype}) => {
@@ -59,6 +58,8 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
     const [error, setError] = useState<string>("");
     const [accountId, setAccountId] = useState<number | null>(null);
 
+    const router = useRouter();
+
     const formSchema = authFormSchema(type);
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -66,8 +67,6 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
         defaultValues: {
           email: "",
           fullName: "",
-          password: "",
-          confirmPassword: ""
         },
     });
      
@@ -76,31 +75,27 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
       setError("");
   
       try {
-        if (type === "register") {
+        if(type === "register"){
           const user = await createUserAccount({
             fullName: values.fullName || "",
             email: values.email,
-            password: values.password,
           });
           setAccountId(user.accountId);
-          console.log("Account ID:", user.accountId);
-        } else if (type === "login") {
-          const loginData = await loginUser({
-            email: values.email,
-            password: values.password,
-          });
-          console.log("Login Successful:", loginData);
+          console.log("account id", accountId);
+          router.push("/auth/login")
+        } else {
+          const user = await loginUser({ email: values.email });
+          setAccountId(user.accountId);
+          console.log("account id", accountId);
         }
-      } catch (error) {
-        setError(
-          type === "register"
-            ? "Failed to create account. Please try again."
-            : "Failed to login. Please check your credentials and try again."
-        );
+        console.log("account id", accountId);
+      } catch {
+        setError("Failed to create account. Please try again.");
       } finally {
         setIsLoading(false);
       }
     };
+    
     return (
     <>
         <Form {...form}>
@@ -150,7 +145,7 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -192,7 +187,7 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
                 </FormItem>
               )}
             />
-          )}
+          )} */}
 
           <br />
           <Button
