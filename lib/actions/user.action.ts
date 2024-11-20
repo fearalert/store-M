@@ -7,6 +7,7 @@ import { getUserByEmail, sendEmailOTP, handleError } from "../helper/helper";
 import { defaultAvatarUrl } from "@/constants/constants";
 import { cookies } from "next/headers";
 import { parseStringify } from "../utils";
+import { redirect } from "next/navigation";
 
 export const createUserAccount = async ({ fullName, email }: 
     { fullName: string; email: string }) => {
@@ -72,7 +73,11 @@ export const loginUser = async ({ email }: { email: string }) => {
     password: string;
   }) => {
     try {
+      console.log("Before", accountId);
+
       accountId = accountId.replace(/^"|"$/g, "");
+      console.log("dgbfewggfueh");
+      console.log(accountId);
       const { account } = await createAdminClient();
   
       const session = await account.createSession(accountId, password);
@@ -111,3 +116,17 @@ export const loginUser = async ({ email }: { email: string }) => {
       console.log(error);
     }
   };
+
+export const logOutUser = async () => {
+  const {account} = await createSessionClient();
+
+  try{
+    await account.deleteSession("current");
+    (await cookies()).delete('appwrite-session');
+
+  }catch (error) {
+    handleError(error, "Failed to sign out user");
+  } finally {
+    redirect("/auth/login");
+  }
+}

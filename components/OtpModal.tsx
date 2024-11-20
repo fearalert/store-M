@@ -12,7 +12,6 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
   
-
 import {
     InputOTP,
     InputOTPGroup,
@@ -46,7 +45,7 @@ const OTPModal = ({
 
         console.log({ sessionId });
   
-        if (sessionId) router.push("/");
+        if (sessionId) router.push("/home");
       } catch (error) {
         console.log("Failed to verify OTP", error);
       }

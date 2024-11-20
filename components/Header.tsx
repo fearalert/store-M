@@ -35,7 +35,7 @@ const Header = () => {
         }}
       />
     </div>
-    <div className="flex flex-row justify-center items-center gap-2">
+    <div className="flex flex-row justify-center items-center gap-2 sm:hidden md:hidden lg:flex xs:hidden">
         <Button onClick={handleClick} className='bg-primary hover:bg-primary text-white relative w-[200px] rounded-full h-12 font-bold text-md'>Upload 
             <UploadCloudIcon
                 className='text-white hover:bg-primary bg-primary'
