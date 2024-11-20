@@ -5,12 +5,17 @@
 :root {
   --primary: #504CB9;
   --secondary: #FA7274;
-  --accent-blue: #7272FA;
+  --accent-blue: #3d4ecc;
   --accent-green: #4CB983;
-  --accent-red: #b94c4c;
+  --accent-red: #ba1e1e;
+  --accent-yellow: #b9b74c;
   --black: #1e1e1e;
   --text-half-opacity: #1e1e1e83;
   --white: #ffffff;
+  --dark-blue: #282887;
+  --dark-green: #1f6d45;
+  --dark-red: #851010;
+  --dark-yellow: #73721e;
 }
 
 .h1{

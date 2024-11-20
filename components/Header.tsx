@@ -4,11 +4,18 @@ import React, { useState } from 'react'
 import { Input } from './ui/input'
 import { SearchIcon, UploadCloudIcon } from 'lucide-react';
 import { Button } from './ui/button';
+// import { useToast } from '@/hooks/useToast';
 
 const Header = () => {
     const [value, setValue] = useState<string>("");
+
+    // const { errorToast } = useToast();
+
+    const handleClick = () => {
+      // errorToast("Something went wrong!", "bottom-center");
+    }
   return (
-    <header className='hidden items-center justify-between gap-5 px-8 sm:flex lg:py-4 bg-white'>
+    <header className='hidden items-center justify-between gap-5 px-8 sm:flex py-4 bg-white'>
       <div className='relative min-w[300px] max-w-[500px] w-full'>
         <Input
             value={value}
@@ -28,8 +35,8 @@ const Header = () => {
         }}
       />
     </div>
-    <div className="md:hidden flex flex-row justify-center items-center gap-2">
-        <Button className='bg-primary hover:bg-primary text-white relative w-[200px] rounded-full h-12 font-bold text-md'>Upload 
+    <div className="flex flex-row justify-center items-center gap-2">
+        <Button onClick={handleClick} className='bg-primary hover:bg-primary text-white relative w-[200px] rounded-full h-12 font-bold text-md'>Upload 
             <UploadCloudIcon
                 className='text-white hover:bg-primary bg-primary'
                 width={24}

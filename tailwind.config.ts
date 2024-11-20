@@ -27,10 +27,21 @@ export default {
   			accent: {
   				blue: 'var(--accent-blue)',
   				green: 'var(--accent-green)',
-  				red: 'var(--accent-red)'
+  				red: 'var(--accent-red)',
+				yellow: 'var(--accent-yellow)',
   			},
+			dark: {
+				blue: 'var(--dark-blue)',
+				green: 'var(--dark-green)',
+				red: 'var(--dark-red)',
+			  yellow: 'var(--dark-yellow)',
+			},
   			white: 'var(--white)',
   			black: 'var(--black)',
+			// slate: {
+			// 	'100' : 'slate-100',
+			// 	'200' : 'slate-200',
+			// },
         text: {
           DEFAULT: 'var(--black)',
           half: 'var(--text-half-opacity)'
