@@ -15,8 +15,17 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from './ui/button';
 import { logOutUser } from '@/lib/actions/user.action';
+import UploadFiles from './UploadFiles';
 
-const MobileNavigation = ({fullName, email, avatar}: SidebarProps) => {
+interface MobileNavProps {
+  $id: string;
+  fullName: string;
+  email: string;
+  avatar: string;
+  accountId: string;
+}
+
+const MobileNavigation = ({$id:ownerId, fullName, email, avatar, accountId}: MobileNavProps) => {
 
   const pathname = usePathname();
   const [open, setOpen] = useState<boolean>(false);
@@ -69,20 +78,7 @@ const MobileNavigation = ({fullName, email, avatar}: SidebarProps) => {
             </ul>
 
             <div className="flex flex-col justify-between gap-5 px-4 pt-20 w-full">
-              <Button className='bg-primary hover:bg-primary text-white relative rounded-full h-12 w-full font-bold text-md'>Upload Files
-                <UploadCloud
-                    className='text-white hover:bg-primary bg-primary'
-                    width={24}
-                    height={24}
-                    style={{
-                    position: 'absolute',
-                    right: '20px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    pointerEvents: 'none',
-                    }}
-                />
-            </Button>
+            <UploadFiles ownerId={ownerId} accountId={accountId} className={'w-full'} />
             <Button
               type="submit"
               className="bg-accent-red text-white px-4 py-2 items-center text-center rounded-full h-12"

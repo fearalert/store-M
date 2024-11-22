@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 const Layout = async({ children }: { children: React.ReactNode }) => {
 
   const currentUser = await getCurrentUser();
-  if(!currentUser) return redirect("/auth/login");
+  if(!currentUser) return redirect("/home");
 
   return (
     <div className="flex min-h-screen">
@@ -19,7 +19,7 @@ const Layout = async({ children }: { children: React.ReactNode }) => {
           <div className="md:hidden">
             <MobileNavigation {...currentUser}/>
           </div>
-          <Header />
+          <Header {...currentUser}/>
           <main className="p-4">{children}</main>
         </section>
     </div>
