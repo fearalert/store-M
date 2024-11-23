@@ -3,11 +3,9 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 
 import {
@@ -19,8 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { dropdownActions } from "@/constants/constants";
-import { constructDownloadUrl } from "@/lib/utils";
-import { EllipsisVerticalIcon, Icon } from "lucide-react";
+import { constructDownloadUrl, convertFileSize, formatDateTime } from "@/lib/utils";
+import { DeleteIcon, EllipsisVerticalIcon } from "lucide-react";
 import Link from "next/link";
 import { Models } from "node-appwrite";
 
@@ -30,8 +28,57 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { deleteFile, renameFile, updateFileUsers } from "@/lib/actions/files.actions";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
+import Thumbnail from "../Thumbnail";
 
+interface Props {
+  file: Models.Document;
+  onInputChange: React.Dispatch<React.SetStateAction<string[]>>;
+  onRemove: (email: string) => void;
+}
+
+const ShareInput = ({ file, onInputChange, onRemove }: Props) => {
+  return (
+    <>
+      <Thumbnail type={file.type} extension={file.extension}/>
+
+      <div>
+        <p className="pl-1 text-text-half">
+          Share file with other users
+        </p>
+        <Input
+          type="email"
+          placeholder="Enter email address"
+          onChange={(e) => onInputChange(e.target.value.trim().split(","))}
+        />
+        <div className="pt-4">
+          <div className="flex justify-between">
+            <p className="text-slate-300">Shared with</p>
+            <p className="text-text-half">
+              {file.users.length} users
+            </p>
+          </div>
+
+          <ul className="pt-2">
+            {file.users.map((email: string) => (
+              <li
+                key={email}
+                className="flex items-center justify-between gap-2"
+              >
+                <p className="font-normal text-text">{email}</p>
+                <Button
+                  onClick={() => onRemove(email)}
+                  className="bg-accent-red"
+                >
+                  <DeleteIcon />
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </>
+  );
+};
 
 const DropdownFile = ({file}: {file: Models.Document}) => {
 
@@ -50,7 +97,6 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
       setisDropdownOpen(false);
       setAction(null);
       setName(file.name);
-      //   setEmails([]);
     };
   
     const handleAction = async () => {
@@ -74,6 +120,19 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
     };
   
 
+    const handleRemoveUser = async (email: string) => {
+      const updatedEmails = emails.filter((e) => e !== email);
+  
+      const success = await updateFileUsers({
+        fileId: file.$id,
+        emails: updatedEmails,
+        path,
+      });
+  
+      if (success) setEmails(updatedEmails);
+      closeAllModals();
+    };
+
 
     const renderDialog = () => {
 
@@ -92,6 +151,46 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
               onChange={(e) => setName(e.target.value)}
             />
           )}
+          {
+            value === "details" && (
+              <div className='flex flex-col gap-4 px-4 py-8 bg-white rounded-md w-full'>
+                    <div className='flex flex-row text-center justify-between gap-8 bg-slate-50 rounded-lg px-4 py-4'>
+                        <Thumbnail type={file.type} extension={file.extension} url={file.url} className="rounded-full bg-white"/>
+                        <div className='flex flex-col gap-4'>
+                          <h1 className='text-md font-bold text-text'>{file.name.toLocaleUpperCase()}</h1>
+                          <h6 className='text-text-half text-sm font-normal'>{formatDateTime(file.$updatedAt)}</h6>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-4 justify-start items-start w-full">
+                        <div className="flex flex-row justify-between w-full">
+                            <p className="text-text-half font-normal">Extension</p>
+                            <p className="text-secondary font-semibold">{file.extension}</p>
+                        </div>
+                        <div className="flex flex-row justify-between w-full">
+                            <p className="text-text-half font-normal">Owner Name</p>
+                            <p className="text-primary font-semibold">{file.owner.fullName}</p>
+                        </div>
+                        <div className="flex flex-row justify-between w-full">
+                            <p className="text-text-half font-normal">File Size</p>
+                            <p className="text-accent-green font-semibold">{convertFileSize(file.size)}</p>
+                        </div>
+                        <div className="flex flex-row justify-between w-full">
+                            <p className="text-text-half font-normal">Created At</p>
+                            <p className="text-accent-yellow font-semibold">{formatDateTime(file.$createdAt)}</p>
+                        </div>
+                        <div className="flex flex-row justify-between w-full">
+                            <p className="text-text-half font-normal">Updated At</p>
+                            <p className="text-dark-yellow font-semibold">{formatDateTime(file.$updatedAt)}</p>
+                        </div>
+                    </div>
+                </div>
+            )
+          }
+          {
+            value === "share" && (
+              <ShareInput file={file} onInputChange={setEmails} onRemove={handleRemoveUser} />
+            )
+          }
         </DialogHeader>
         {["rename", "delete", "share"].includes(value) && (
           <DialogFooter className="flex flex-col gap-3 md:flex-row w-full">
