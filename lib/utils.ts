@@ -12,7 +12,7 @@ export const parseStringify = (value: unknown) =>
 export const getFileType = (fileName: string) => {
   const extension =  fileName.split('.').pop()?.toLowerCase();
 
-  if(!extension) return { fileType: "other", extension: ""};
+  if(!extension) return { fileType: "other", extension: "other"};
 
   const documentExtensions = [
     "pdf",
@@ -67,11 +67,10 @@ export const getFileType = (fileName: string) => {
 }
 
 export const getFileIcon = (
-  extension: string | undefined,
+  extension: string,
   fileType: string,
 )=> {
   switch (extension) {
-    // Document
     case "pdf":
       return "/assets/icons/file-pdf.svg";
     case "doc":

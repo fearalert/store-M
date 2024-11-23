@@ -54,9 +54,9 @@ const Sidebar = ({fullName, email, avatar}: SidebarProps) => {
             alt="logo"
             width={280}
             height={82}
-            className="h-auto py-8 px-4 object-contain"
+            className="h-auto py-8 px-4 object-contain bg-slate-100 mx-4"
           />
-      <div className="flex flex-row items-center justify-center gap-2 bg-slate-100 px-4">
+      <div className="flex flex-row items-center justify-center gap-2 bg-slate-100 px-6 mx-4 my-4 rounded-md">
         <Image
             src={avatar}
             alt="logo"

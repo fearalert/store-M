@@ -12,6 +12,9 @@ const Layout = async({ children }: { children: React.ReactNode }) => {
   const currentUser = await getCurrentUser();
   if(!currentUser) return redirect("/auth/login");
 
+  console.log("current User", currentUser);
+  console.log("current User Owner Id", currentUser.$id);
+
   return (
     <div className="flex min-h-screen">
         <Sidebar {...currentUser}/>
@@ -19,7 +22,7 @@ const Layout = async({ children }: { children: React.ReactNode }) => {
           <div className="md:hidden">
             <MobileNavigation {...currentUser}/>
           </div>
-          <Header {...currentUser}/>
+          <Header avatar={currentUser.avatar} userId={currentUser.$id} accountId={currentUser.accountId} />
           <main className="p-4">{children}</main>
         </section>
     </div>

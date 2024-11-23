@@ -29,7 +29,7 @@ export const uploadFile = async ({
         type: getFileType(bucketFile.name).fileType,
         name: bucketFile.name,
         url: constructFileUrl(bucketFile.$id),
-        extension: getFileType(bucketFile.name).extension,
+        extension: getFileType(bucketFile.name).fileName?.split(".").pop()?.toLowerCase(),
         size: bucketFile.sizeOriginal,
         owner: ownerId,
         accountId,
