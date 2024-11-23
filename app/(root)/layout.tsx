@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 const Layout = async({ children }: { children: React.ReactNode }) => {
 
   const currentUser = await getCurrentUser();
-  if(!currentUser) return redirect("/home");
+  if(!currentUser) return redirect("/auth/login");
 
   return (
     <div className="flex min-h-screen">

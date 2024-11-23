@@ -48,19 +48,19 @@ export const getFileType = (fileName: string) => {
 
 
   if(documentExtensions.includes(extension)){
-    return {fileType: "Document", fileName}
+    return {fileType: "document", fileName}
   }
 
   if (imageExtensions.includes(extension)){
-    return {fileType: "Images", fileName}
+    return {fileType: "image", fileName}
   }
 
   if (videoExtensions.includes(extension)){
-    return {fileType: "Video", fileName}
+    return {fileType: "video", fileName}
   }
 
   if (audioExtensions.includes(extension)){
-    return {fileType: "Audio", fileName}
+    return {fileType: "audio", fileName}
   }
 
   return {fileType: "other", fileName}
@@ -147,5 +147,5 @@ export const getFileParams = (fileType: string) => {
 export const convertFileToUrl = (file: File) => URL.createObjectURL(file);
 
 export const constructFileUrl = (bucketFileId: string) => {
-  return `${process.env.NEXT_PUBLIX_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT}`;
+  return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT}`;
 };
