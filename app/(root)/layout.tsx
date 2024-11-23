@@ -16,9 +16,9 @@ const Layout = async({ children }: { children: React.ReactNode }) => {
   console.log("current User Owner Id", currentUser.$id);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen">
         <Sidebar {...currentUser}/>
-        <section className="w-full bg-slate-200">
+        <section className="w-full bg-slate-100">
           <div className="md:hidden">
             <MobileNavigation {...currentUser}/>
           </div>

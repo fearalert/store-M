@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -25,6 +26,11 @@ import { Models } from "node-appwrite";
 
 
 import { useState } from "react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { deleteFile, renameFile, updateFileUsers } from "@/lib/actions/files.actions";
+import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 
 const DropdownFile = ({file}: {file: Models.Document}) => {
@@ -32,6 +38,41 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
     const [isModalOpen, setisModalOpen] = useState<boolean>(false);
     const [isDropDownOpen, setisDropdownOpen] = useState<boolean>(false);
     const [action, setAction] = useState<DropdownAction | null >(null);
+    const [name, setName] = useState(file.name);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [emails, setEmails] = useState<string[]>([]);
+
+    const path = usePathname();
+
+
+    const closeAllModals = () => {
+      setisModalOpen(false);
+      setisDropdownOpen(false);
+      setAction(null);
+      setName(file.name);
+      //   setEmails([]);
+    };
+  
+    const handleAction = async () => {
+      if (!action) return;
+      setIsLoading(true);
+      let success = false;
+  
+      const actions = {
+        rename: () =>
+          renameFile({ fileId: file.$id, name, extension: file.extension, path }),
+        share: () => updateFileUsers({ fileId: file.$id, emails, path }),
+        delete: () =>
+          deleteFile({ fileId: file.$id, bucketFileId: file.bucketFileId, path }),
+      };
+  
+      success = await actions[action.value as keyof typeof actions]();
+  
+      if (success) closeAllModals();
+  
+      setIsLoading(false);
+    };
+  
 
 
     const renderDialog = () => {
@@ -39,17 +80,30 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
       if(!action) return null;
 
       const { value, label } = action;
-      
+
       return (
-        <DialogContent className="rounded-lg max-w-[400px] w-full">
-          <DialogHeader className="flex flex-col gap-3">
-            <DialogTitle className="text-center text-text-half">Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete your account
-              and remove your data from our servers.
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
+        <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{label}</DialogTitle>
+          {value === "rename" && (
+            <Input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          )}
+        </DialogHeader>
+        {["rename", "delete", "share"].includes(value) && (
+          <DialogFooter className="flex flex-col gap-3 md:flex-row w-full">
+            <Button onClick={closeAllModals} className="bg-slate-50 hover:bg-secondary text-black  hover:text-white rounded-full shadow-sm">
+              Cancel
+            </Button>
+            <Button onClick={handleAction} className={`bg-primary hover:bg-accent-blue rounded-full text-white font-medium ${isLoading ? `disabled:true`: `disabled:false`}`}>
+              <p className="capitalize">{value}</p>
+            </Button>
+          </DialogFooter>
+        )}
+      </DialogContent>
       );
     }
     
@@ -67,7 +121,7 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
                   <DropdownMenuItem key={actionItem.value} className='w-auto' 
                     onClick={() => {
                     
-                      setAction(action);
+                      setAction(actionItem);
                       if(["rename", "share", "delete", "details"].includes(actionItem.value)){
                         setisModalOpen(true);
                       }
@@ -84,7 +138,7 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
                         ):
                         (
                           <div
-                            className="flex flex-row gap-4 items-center">
+                            className="flex flex-row gap-4 items-center cursor-pointer">
                               {actionItem.value.includes("rename") && 
                                 <actionItem.icon className="w-6 h-6 text-accent-yellow" />
                               }

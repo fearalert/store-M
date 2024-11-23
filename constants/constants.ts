@@ -6,7 +6,7 @@ export const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!
 
 export const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
-export const dropdownActions: DropdownAction[] = [
+export const dropdownActions = [
     {
         value : "rename",
         label : "Rename",
