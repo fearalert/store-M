@@ -13,10 +13,10 @@ export interface SidebarProps {
 }
 
 export const sidebarItems = [
-  { id: 1, name: 'Dashboard', link: '/home', icons: icons.LayoutDashboard },
+  { id: 1, name: 'Dashboard', link: '/', icons: icons.LayoutDashboard },
   { id: 2, name: 'Documents', link: '/documents', icons: icons.FileBox },
   { id: 3, name: 'Images', link: '/images', icons: icons.Image },
-  { id: 4, name: 'Audio/Video', link: '/video', icons: icons.Video },
+  { id: 4, name: 'Media', link: '/media', icons: icons.Video },
   { id: 5, name: 'Others', link: '/others', icons: icons.ShipWheel },
 ]
 
@@ -32,7 +32,7 @@ const Sidebar = ({fullName, email, avatar}: SidebarProps) => {
             alt="logo"
             width={224}
             height={82}
-            className="h-auto py-8 px-4"
+            className="h-auto py-8 px-4 mb-12"
           />
         <ul>
           {sidebarItems.map((item) => {
@@ -47,14 +47,14 @@ const Sidebar = ({fullName, email, avatar}: SidebarProps) => {
               </Link>
             </li>
           )})}
-      </ul>
+        </ul>
       </div>
       <Image
             src="/file.png"
             alt="logo"
             width={280}
             height={82}
-            className="h-auto py-8 px-4 object-contain bg-slate-100 mx-4"
+            className="h-auto py-2 px-2 object-contain"
           />
       <div className="flex flex-row items-center justify-center gap-2 bg-slate-100 px-6 mx-4 my-4 rounded-md">
         <Image

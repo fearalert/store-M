@@ -23,7 +23,7 @@ const Layout = async({ children }: { children: React.ReactNode }) => {
             <MobileNavigation {...currentUser}/>
           </div>
           <Header avatar={currentUser.avatar} userId={currentUser.$id} accountId={currentUser.accountId} />
-          <main className="p-4">{children}</main>
+          <main className="remove-scrollbar h-full flex-1 overflow-auto bg-slate-100 px-5 py-7 md:mb-7 md:px-9 md:py-10">{children}</main>
         </section>
     </div>
   );

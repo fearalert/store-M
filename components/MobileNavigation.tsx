@@ -1,6 +1,6 @@
 "use client";
 
-import { MenuIcon, UploadCloud } from 'lucide-react'
+import { LogOut, MenuIcon, UploadCloud } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -84,6 +84,7 @@ const MobileNavigation = ({$id:ownerId, fullName, email, avatar, accountId}: Mob
               className="bg-accent-red text-white px-4 py-2 items-center text-center rounded-full h-12"
               onClick={async () => await logOutUser()}
             >
+              <LogOut className='text-white'/>
               <p>Logout</p>
             </Button>
           </div>

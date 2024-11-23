@@ -1,4 +1,4 @@
-import { ID, Query } from "node-appwrite";
+import { ID, Models, Query } from "node-appwrite";
 import { createAdminClient } from "../appwrite";
 import { appwriteConfig } from "../appwrite/config";
 
@@ -37,4 +37,15 @@ export const sendEmailOTP = async ({email}:{email: string}) => {
     } catch(error){
         handleError(error, "Failed to send OTP");
     }
+}
+
+export const createQueries = (currentUser: Models.Document) => {
+  const queries = [
+    Query.or([
+      Query.equal('owner', [currentUser.$id]),
+      Query.contains('users', [currentUser.email])
+    ])
+  ];
+
+  return queries;
 }

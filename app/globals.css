@@ -18,6 +18,26 @@
   --dark-yellow: #73721e;
 }
 
+.remove-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  border-radius: 0px;
+}
+
+.remove-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.remove-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 0px;
+}
+
+.remove-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+
+
 .h1{
   @apply text-white dark:text-white text-[48px] leading-[60px] font-bold;
 }
@@ -40,3 +60,7 @@
   }
 }
 
+
+.page-container-css {
+  @apply mx-auto flex w-full sm:max-w-7xl md:max-w-7xl lg:max-w-[80vw] xl:max-w-[80vw] flex-col items-center gap-8 !important;
+}

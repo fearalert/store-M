@@ -67,7 +67,7 @@ export const getFileType = (fileName: string) => {
 }
 
 export const getFileIcon = (
-  extension: string,
+  extension: string | undefined,
   fileType: string,
 )=> {
   switch (extension) {
@@ -147,4 +147,64 @@ export const convertFileToUrl = (file: File) => URL.createObjectURL(file);
 
 export const constructFileUrl = (bucketFileId: string) => {
   return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT}`;
+};
+
+export const convertFileSize = (sizeInBytes:number, digits?:number) => {
+
+  const KB = 1024*1024;
+  const MB = KB * 1024;
+  const GB = MB * 1024;
+
+  if (sizeInBytes < 1024) {
+    return sizeInBytes.toFixed(digits || 1) + "B";
+  }
+  if (sizeInBytes < KB){
+    const sizeInKB = sizeInBytes/1024;
+    return sizeInKB.toFixed(digits || 1) + "KB";
+  }
+  if (sizeInBytes < MB){
+    const sizeInMB = sizeInBytes/KB;
+    return sizeInMB.toFixed(digits || 1) + "MB";
+  }
+  if (sizeInBytes < GB){
+    const sizeInGB = sizeInBytes/MB;
+    return sizeInGB.toFixed(digits || 1) + "GB";
+  }
+}
+
+export const formatDateTime = (isoString: string | null | undefined) => {
+  if (!isoString) return "—";
+
+  const date = new Date(isoString);
+
+  // Get hours and adjust for 12-hour format
+  let hours = date.getHours();
+  const minutes = date.getMinutes();
+  const period = hours >= 12 ? "pm" : "am";
+
+  hours = hours % 12 || 12;
+
+  const time = `${hours}:${minutes.toString().padStart(2, "0")}${period}`;
+  const day = date.getDate();
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const month = monthNames[date.getMonth()];
+
+  return `${month} ${day}, ${time}`;
+};
+
+export const constructDownloadUrl = (bucketFileId: string) => {
+  return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/download?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT}`;
 };

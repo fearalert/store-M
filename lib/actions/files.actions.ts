@@ -5,8 +5,9 @@ import { createAdminClient } from "../appwrite"
 import { appwriteConfig } from "../appwrite/config";
 import { ID } from "node-appwrite";
 import { constructFileUrl, getFileType, parseStringify } from "../utils";
-import { handleError } from "../helper/helper";
+import { createQueries, handleError } from "../helper/helper";
 import { revalidatePath } from "next/cache";
+import { getCurrentUser } from "./user.action";
 
 export const uploadFile = async ({
     file,
@@ -55,3 +56,26 @@ export const uploadFile = async ({
       handleError(error, "Failed to upload file");
     }
   };
+
+export const getFiles = async ()=> {
+  const { databases } = await createAdminClient();
+
+  try{
+    const currentUser = getCurrentUser();
+
+    if(!currentUser) throw new Error("User not found.");
+
+    const queries = createQueries(await currentUser);
+
+    const files = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesCollectionId,
+      queries
+    );
+
+    return parseStringify(files);
+  }catch(error){
+    console.log(error);
+    handleError(error, "Failed to get the files.")
+  }
+}

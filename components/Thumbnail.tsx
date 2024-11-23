@@ -24,12 +24,12 @@ export const Thumbnail = ({
       <Image
         src={isImage ? url : getFileIcon(extension, type)}
         alt="thumbnail"
-        width={100}
-        height={100}
+        width={80}
+        height={80}
         className={cn(
-          "size-12 object-contain",
+          "size- object-contain",
           imageClassName,
-          isImage && "thumbnail-image",
+          isImage && "size-full object-cover object-center",
         )}
       />
     </figure>
