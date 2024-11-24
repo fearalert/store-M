@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# **Store-M: Storage Management System**
 
-## Getting Started
+**Store-M** is a powerful storage management system that allows users to upload, search, manage and share their files effortlessly. It includes features such as user authentication, file sharing, and responsive UI design.
+![alt text](image.png)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## **Table of Contents**
+- [Features](#features)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [Scripts](#scripts)
+- [Usage](#usage)
+
+---
+
+## **Features**
+- Secure file uploads.
+- Efficient search functionality with debounced queries.
+- User authentication with profile management.
+- File sharing accross users.
+- Thumbnail for files.
+- Asynchronous file fetching and display.
+- Next.js Dynamic Routing.
+
+---
+
+## **Installation**
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/fearalert/Store-M.git
+   cd Store-M
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+---
+
+## **Environment Variables**
+
+Create a `.env` file in the project root with the following variables:
+
+```plaintext
+NEXT_PUBLIC_APPWRITE_ENDPOINT="https://cloud.appwrite.io/v1"
+NEXT_PUBLIC_APPWRITE_PROJECT=
+NEXT_PUBLIC_APPWRITE_DATABASE=
+NEXT_PUBLIC_APPWRITE_USERS_COLLECTION=
+NEXT_PUBLIC_APPWRITE_FILES_COLLECTION=
+NEXT_PUBLIC_APPWRITE_BUCKET=
+NEXT_PUBLIC_APPWRITE_KEY=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## **Scripts**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Start Development Server
+```bash
+npm run dev
+```
 
-## Learn More
+### Build for Production
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## **Usage**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Run the application:**
+   Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+2. **Visit the application:**  
+   Open your browser and navigate to `http://localhost:3000`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Features to explore:**  
+   - OTP based Passwordless Authentication.
+   - Search for files.
+   - Upload and share files effectively.
+   - Manage yout files effeciently.
+   - Upload files directly via the upload button.
+   - Click on the user avatar to view the profile or log out.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## **Contributing**
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feature-name`.
+3. Commit your changes: `git commit -m 'Add new feature'`.
+4. Push to the branch: `git push origin feature-name`.
+5. Open a Pull Request.
+
+---
