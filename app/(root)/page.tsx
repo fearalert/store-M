@@ -25,9 +25,9 @@ const Dashboard = async () => {
   const { ownerId, accountId } = currentUser;
 
   return (
-    <div className="flex w-auto xs:max-w-[340px] sm:max-w-[400px] md:max-w-7xl lg:max-w-[80vw] xl:max-w-[80vw] flex-col items-start justify-start gap-8 overflow-y-scroll">
+    <div className="page-container-css">
         <h1 className='text-3xl font-bold'>{"Dashboard".toLocaleUpperCase()}</h1>
-        <div className="w-full xs:max-w-full sm:max-w-full md:max-w-7xl lg:max-w-[80vw] xl:max-w-[80vw] flex flex-col md:flex-row gap-8 justify-between">
+        <div className="w-full xs:max-w-full sm:max-w-full md:max-w-7xl lg:max-w-[80vw] xl:max-w-[80vw] flex flex-col lg:flex-row gap-8 justify-between">
         <section className="flex flex-col items-start justify-start max-w-[800px] min-w-[360px] w-full">
             <Chart used={totalSpace.used} />
 
