@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -21,6 +21,7 @@ import {
 import { Button } from "./ui/button"
 import { sendEmailOTP } from "@/lib/helper/helper";
 import { verifySecret } from "@/lib/actions/user.action";
+import { Router } from "lucide-react";
 
 const OTPModal = ({
     accountId,
@@ -29,7 +30,7 @@ const OTPModal = ({
     accountId: string;
     email: string;
   }) => {
-    // const router = useRouter();
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState<boolean>(true);
     const [password, setPassword] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -45,7 +46,7 @@ const OTPModal = ({
     
         if (sessionId) {
           console.log("Redirecting to home...");
-          return redirect("/");
+          router.push("/");
         } else {
           console.log("Session ID not found, cannot redirect.");
         }
@@ -57,8 +58,13 @@ const OTPModal = ({
     };
     
     const handleResendOtp = async () => {
-      await sendEmailOTP({ email });
-    };
+    try {
+        await sendEmailOTP({ email });
+    } catch (error) {
+        console.error("Failed to resend OTP:", error);
+    }
+};
+
   
     return (
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>

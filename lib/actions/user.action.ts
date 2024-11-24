@@ -105,35 +105,24 @@ export const loginUser = async ({ email }: { email: string }) => {
   
   export const getCurrentUser = async () => {
     try {
-        const sessionCookie = (await cookies()).get("appwrite-session");
-
-        if (!sessionCookie) {
-            console.warn("No session cookie found.");
-            return null;
-        }
-
-        const { databases, account } = await createSessionClient();
-
-        const result = await account.get();
-
-        const user = await databases.listDocuments(
-            appwriteConfig.databaseId,
-            appwriteConfig.usersCollectionId,
-            [Query.equal("accountId", result.$id)],
-        );
-
-        if (user.total <= 0) {
-            console.warn("No user found for this account ID.");
-            return null;
-        }
-
-        return parseStringify(user.documents[0]);
+      const { databases, account } = await createSessionClient();
+  
+      const result = await account.get();
+  
+      const user = await databases.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.usersCollectionId,
+        [Query.equal("accountId", result.$id)],
+      );
+  
+      if (user.total <= 0) return null;
+  
+      return parseStringify(user.documents[0]);
     } catch (error) {
-        console.error("Error fetching current user:", error);
-        return null;
+      console.log(error);
     }
-};
-
+  };
+  
 
 export const logOutUser = async () => {
   const {account} = await createSessionClient();
