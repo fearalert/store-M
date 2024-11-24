@@ -93,7 +93,7 @@ export const loginUser = async ({ email }: { email: string }) => {
       (await cookies()).set("appwrite-session", session.secret, {
         path: "/",
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "none",
         secure: true,
       });
   

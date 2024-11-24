@@ -17,7 +17,7 @@ export const createSessionClient = async () => {
       throw new Error("No Session");
   }
 
-  console.log("Session value:", session.value); // Debug log
+  console.log("Session value:", session.value);
 
   client.setSession(session.value);
 
