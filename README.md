@@ -1,6 +1,6 @@
 # **Store-M: Storage Management System**
 
-**Store-M** is a powerful storage management system that allows users to upload, search, manage and share their files effortlessly. It includes features such as user authentication, file sharing, and responsive UI design.
+**Store-M** is a powerful storage management system that allows users to upload, search, manage and share their files effortlessly. It includes features such as user authentication, file management, file sharing, and responsive UI design.
 ![alt text](image.png)
 
 ---

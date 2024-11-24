@@ -43,6 +43,8 @@ const OTPModal = ({
       try {
         const sessionId = await verifySecret({ accountId, password });
 
+        console.log("Session-ID");
+
         console.log({ sessionId });
   
         if (sessionId) router.push("/");

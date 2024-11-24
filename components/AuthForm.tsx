@@ -82,7 +82,6 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
           });
           setAccountId(user.accountId);
           console.log("account id", accountId);
-          router.push("/auth/login")
         } else {
           const user = await loginUser({ email: values.email });
           setAccountId(user.accountId);

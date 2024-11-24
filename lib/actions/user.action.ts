@@ -8,8 +8,9 @@ import { defaultAvatarUrl } from "@/constants/constants";
 import { cookies } from "next/headers";
 import { parseStringify } from "../utils";
 import { redirect } from "next/navigation";
-
-export const createUserAccount = async ({
+ 
+  
+ export const createUserAccount = async ({
   fullName,
   email,
 }: {
@@ -17,20 +18,21 @@ export const createUserAccount = async ({
   email: string;
 }) => {
   try {
+    
     const existingUser = await getUserByEmail(email);
-
     if (existingUser) {
       throw new Error("User already exists.");
     }
-
+  
+  
     const accountId = await sendEmailOTP({ email });
     if (!accountId) {
-      throw new Error("Failed to send an OTP.");
+      throw new Error("Failed to send an OTP");
     }
-
+  
     const { databases } = await createAdminClient();
-
-    const userDocument = await databases.createDocument(
+  
+    await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.usersCollectionId,
       ID.unique(),
@@ -41,14 +43,8 @@ export const createUserAccount = async ({
         accountId,
       }
     );
-
-    return {
-      id: userDocument.$id,
-      fullName: userDocument.fullName,
-      email: userDocument.email,
-      accountId: parseStringify(userDocument.accountId),
-      avatar: userDocument.avatar,
-    };
+  
+    return parseStringify({ accountId });
   } catch (error) {
     throw new Error(
       `CreateUserAccountError: ${
@@ -62,14 +58,12 @@ export const createUserAccount = async ({
 export const loginUser = async ({ email }: { email: string }) => {
       try {
         const existingUser = await getUserByEmail(email);
-    
-        if (!existingUser) {
-          throw new Error("User not found.");
+
+        if (existingUser) {
+          await sendEmailOTP({ email });
+          return parseStringify({ accountId: existingUser.accountId });
         }
-    
-        // User exists, send OTP
-        await sendEmailOTP({ email });
-        return parseStringify({ accountId: existingUser.accountId });
+        return parseStringify({ accountId: null, error: "User not found" });
       } catch (error) {
         throw new Error(
           `LoginUserError: ${
