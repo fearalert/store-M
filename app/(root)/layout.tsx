@@ -7,27 +7,28 @@ import {redirect} from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-const Layout = async({ children }: { children: React.ReactNode }) => {
+const Layout = async ({ children }: { children: React.ReactNode }) => {
+    const currentUser = await getCurrentUser();
 
-  const currentUser = await getCurrentUser();
-  
-  if(!currentUser) return redirect("/auth/login");
+    if (!currentUser) {
+        console.warn("No current user. Redirecting to login.");
+        return redirect("/auth/login");
+    }
 
-  console.log("current User", currentUser);
-  console.log("current User Owner Id", currentUser.$id);
-
-  return (
-    <div className="flex h-screen">
-        <Sidebar {...currentUser}/>
-        <section className="w-full bg-slate-100">
-          <div className="md:hidden fixed top-0">
-            <MobileNavigation {...currentUser}/>
-          </div>
-          <Header {...currentUser} />
-          <main className="remove-scrollbar h-full flex-1 overflow-auto bg-slate-100 px-5 py-7 md:px-9 md:py-10">{children}</main>
-        </section>
-    </div>
-  );
+    return (
+        <div className="flex h-screen">
+            <Sidebar {...currentUser} />
+            <section className="w-full bg-slate-100">
+                <div className="md:hidden fixed top-0">
+                    <MobileNavigation {...currentUser} />
+                </div>
+                <Header {...currentUser} />
+                <main className="remove-scrollbar h-full flex-1 overflow-auto bg-slate-100 px-5 py-7 md:px-9 md:py-10">
+                    {children}
+                </main>
+            </section>
+        </div>
+    );
 };
 
 export default Layout;
