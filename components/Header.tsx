@@ -208,13 +208,13 @@ const Header = ({avatar, userId, accountId, email}: HeaderProps) => {
           >
             <DropdownMenuItem
               onSelect={() => setProfileOpen(true)}
-              className="cursor-pointer hover:bg-secondary/10 p-2 rounded-md"
+              className="cursor-pointer hover:bg-secondary p-2 rounded-md"
             >
               View Profile
             </DropdownMenuItem>
             <DropdownMenuItem
               onSelect={() => setLogoutOpen(true)}
-              className="cursor-pointer hover:bg-red-500/10 text-red-500 p-2 rounded-md"
+              className="cursor-pointer hover:bg-accent-red text-dark-red p-2 rounded-md"
             >
               Logout
             </DropdownMenuItem>

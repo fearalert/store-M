@@ -182,7 +182,7 @@ export async function getTotalSpaceUsed() {
       all: 10 * 1024 * 1024 * 1024
     };
 
-    files.documents.forEach((file: any) => {
+    files.documents.forEach((file) => {
       const fileType = file.type as FileType;
       totalSpace[fileType].size += file.size;
       totalSpace.used += file.size;

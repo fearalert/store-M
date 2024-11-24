@@ -20,14 +20,14 @@ const SortComponent = () => {
 
   return (
     <Select onValueChange={handleSort} defaultValue={sortTypes[0].value}>
-      <SelectTrigger className="sort-select">
+      <SelectTrigger className="h-11 w-full rounded-[8px] border-transparent bg-white !shadow-sm sm:w-[210px]">
         <SelectValue placeholder={sortTypes[0].value} />
       </SelectTrigger>
-      <SelectContent className="sort-select-content">
-        {sortTypes.map((sort: { label: any; value: any; }) => (
+      <SelectContent className="shadow-drop-3">
+        {sortTypes.map((sort: { label: string; value: string; }) => (
           <SelectItem
             key={sort.label}
-            className="shad-select-item"
+            className="cursor-pointer"
             value={sort.value}
           >
             {sort.label}

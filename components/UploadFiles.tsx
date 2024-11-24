@@ -51,7 +51,7 @@ export default function UploadFilesComponent({ownerId, accountId, className}: Pr
     [ownerId, accountId, path],
   );
 
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+  const {getRootProps, getInputProps} = useDropzone({onDrop})
 
   return (
     <div {...getRootProps()}>
@@ -95,7 +95,7 @@ export default function UploadFilesComponent({ownerId, accountId, className}: Pr
                                 extension={extension}
                                 url={convertFileToUrl(file)}
                             />
-                            <div className="subtitle-2 mb-2 line-clamp-1 max-w-[300px]">
+                            <div className="mb-2 max-w-[300px]">
                             {file.name}
                             <Image
                                 src="/assets/icons/file-loader.gif"
