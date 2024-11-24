@@ -26,7 +26,7 @@ const Dashboard = async () => {
             <Chart used={totalSpace.used} />
 
             <ul className="grid grid-cols-2 gap-4 xl:mt-10 xl:grid-cols-2 w-full" >
-            {usageSummary.map((summary: any) => (
+            {usageSummary.map((summary) => (
                 <Link
                 href={summary.url}
                 key={summary.title}
@@ -54,7 +54,9 @@ const Dashboard = async () => {
             {files.documents.length > 0 ? (
             <ul className="mt-5 flex flex-col gap-5">
                 {files.documents.map((file: Models.Document) => (
-                    <div className="space-y-2">
+                    <div 
+                    key={file.$id}
+                    className="space-y-2">
                         <Link
                             href={file.url}
                             target="_blank"

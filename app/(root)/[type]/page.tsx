@@ -1,8 +1,8 @@
 import DropdownFile from '@/components/dynamicroute/DropdownFile';
 import SortComponent from '@/components/SortComponent';
 import Thumbnail from '@/components/Thumbnail';
-import { getFiles, getTotalSpaceUsed } from '@/lib/actions/files.actions';
-import { convertFileSize, formatDateTime, getFileParams, getUsageSummary } from '@/lib/utils';
+import { getFiles } from '@/lib/actions/files.actions';
+import { convertFileSize, formatDateTime, getFileParams } from '@/lib/utils';
 import Link from 'next/link';
 import { Models } from "node-appwrite";
 
@@ -17,8 +17,6 @@ const DynamicPage = async({searchParams, params}: SearchParmsProps) => {
     const types = getFileParams(type) as FileType[];
 
     const files = await getFiles({ types, searchText, sort });
-
-    const totalSpace = await getTotalSpaceUsed();
 
     return (
         <div className='page-container-css'>

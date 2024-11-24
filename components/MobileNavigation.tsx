@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, MenuIcon, UploadCloud } from 'lucide-react'
+import { LogOut, MenuIcon } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -10,7 +10,7 @@ import {
 
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { sidebarItems, SidebarProps } from './Sidebar'
+import { sidebarItems } from './Sidebar'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from './ui/button';

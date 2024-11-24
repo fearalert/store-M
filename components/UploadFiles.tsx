@@ -36,7 +36,7 @@ export default function UploadFilesComponent({ownerId, accountId, className}: Pr
         }
 
         return uploadFile({ file, ownerId, accountId, path }).then(
-          (uploadedFile: any) => {
+          (uploadedFile) => {
             if (uploadedFile) {
               setFiles((prevFiles) =>
                 prevFiles.filter((f) => f.name !== file.name),
