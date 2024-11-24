@@ -19,10 +19,10 @@ const Layout = async({ children }: { children: React.ReactNode }) => {
     <div className="flex h-screen">
         <Sidebar {...currentUser}/>
         <section className="w-full bg-slate-100">
-          <div className="md:hidden">
+          <div className="md:hidden fixed top-0">
             <MobileNavigation {...currentUser}/>
           </div>
-          <Header avatar={currentUser.avatar} userId={currentUser.$id} accountId={currentUser.accountId} />
+          <Header avatar={currentUser.avatar} userId={currentUser.$id} accountId={currentUser.accountId} email={currentUser.email} />
           <main className="remove-scrollbar h-full flex-1 overflow-auto bg-slate-100 px-5 py-7 md:px-9 md:py-10">{children}</main>
         </section>
     </div>

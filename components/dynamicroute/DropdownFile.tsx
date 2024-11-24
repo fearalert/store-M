@@ -223,7 +223,6 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
                 dropdownActions.map((actionItem) => (
                   <DropdownMenuItem key={actionItem.value} className='w-auto' 
                     onClick={() => {
-                    
                       setAction(actionItem);
                       if(["rename", "share", "delete", "details"].includes(actionItem.value)){
                         setisModalOpen(true);

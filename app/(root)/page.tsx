@@ -54,25 +54,28 @@ const Dashboard = async () => {
             {files.documents.length > 0 ? (
             <ul className="mt-5 flex flex-col gap-5">
                 {files.documents.map((file: Models.Document) => (
-                <Link
-                    href={file.url}
-                    target="_blank"
-                    className="flex items-center gap-3"
-                    key={file.$id}
-                >
-                    <Thumbnail
-                    type={file.type}
-                    extension={file.extension}
-                    url={file.url}
-                    />
+                    <div className="space-y-2">
+                        <Link
+                            href={file.url}
+                            target="_blank"
+                            className="flex items-center gap-3"
+                            key={file.$id}
+                        >
+                            <Thumbnail
+                            type={file.type}
+                            extension={file.extension}
+                            url={file.url}
+                            />
 
-                    <div className="flex w-full flex-col xl:flex-row xl:justify-between">
-                    <div className="flex flex-col gap-1">
-                        <p className="w-full text-light-100 sm:max-w-[200px] lg:max-w-[250px] text-half font-bold">{file.name}</p>
-                        <span className='text-text-half text-sm font-normal'>{formatDateTime(file.$createdAt)}</span>
+                            <div className="flex w-full flex-col xl:flex-row xl:justify-between">
+                            <div className="flex flex-col gap-1">
+                                <p className="w-full text-light-100 sm:max-w-[200px] lg:max-w-[250px] text-half font-bold">{file.name}</p>
+                                <span className='text-text-half text-sm font-normal'>{formatDateTime(file.$createdAt)}</span>
+                            </div>
+                            </div>
+                        </Link>
+                        <Separator className="w-full h-[1px] rounded-full bg-primary-100 bg-opacity-20"/>
                     </div>
-                    </div>
-                </Link>
                 ))}
             </ul>
             ) : (

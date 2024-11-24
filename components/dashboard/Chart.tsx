@@ -29,7 +29,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export const Chart = ({ used = 0 }: { used: number }) => {
-  const chartData = [{ storage: "used", 10: used, fill: "var(--secondary-color)" }];
+  const chartData = [{ storage: "used", 10: used, fill: "var(--white)" }];
 
   return (
     <Card className="flex items-center rounded-2xl bg-primary p-5 md:mb-4 sm:mb-4 xs:mb-4 text-white md:flex-col xl:flex-row w-full">
@@ -46,7 +46,7 @@ export const Chart = ({ used = 0 }: { used: number }) => {
               gridType="circle"
               radialLines={false}
               stroke="none"
-              className="first:fill-text-half last:fill-primary"
+              className="first:fill-primary-100 last:fill-primary"
               polarRadius={[86, 74]}
             />
             <RadialBar dataKey="storage" background cornerRadius={10} />
@@ -91,7 +91,7 @@ export const Chart = ({ used = 0 }: { used: number }) => {
       </CardContent>
       <CardHeader className="flex-1 items-start px-3 py-0 sm:px-5 lg:p-3 xl:pr-5">
         <CardTitle className="text-3xl font-bold md:text-center lg:text-left">Available Storage</CardTitle>
-        <CardDescription className="mt-2 w-full text-white font-bold md:text-center lg:text-left">
+        <CardDescription className="mt-2 w-full text-secondary text-md font-bold md:text-center lg:text-left">
           {used ? convertFileSize(used) : "10GB"} / 10GB
         </CardDescription>
       </CardHeader>

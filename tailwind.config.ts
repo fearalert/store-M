@@ -20,7 +20,8 @@ export default {
   			background: 'var(--primary)',
   			foreground: 'var(--foreground)',
   			primary: {
-  				DEFAULT: 'var(--primary)'
+  				DEFAULT: 'var(--primary)',
+				'100' : 'var(--primary-100)',
   			},
   			secondary: {
   				DEFAULT: 'var(--secondary)'
