@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
 const Layout = async({ children }: { children: React.ReactNode }) => {
 
   const currentUser = await getCurrentUser();
+  
   if(!currentUser) return redirect("/auth/login");
 
   console.log("current User", currentUser);
@@ -22,7 +23,7 @@ const Layout = async({ children }: { children: React.ReactNode }) => {
           <div className="md:hidden fixed top-0">
             <MobileNavigation {...currentUser}/>
           </div>
-          <Header avatar={currentUser.avatar} userId={currentUser.$id} accountId={currentUser.accountId} email={currentUser.email} />
+          <Header {...currentUser} />
           <main className="remove-scrollbar h-full flex-1 overflow-auto bg-slate-100 px-5 py-7 md:px-9 md:py-10">{children}</main>
         </section>
     </div>

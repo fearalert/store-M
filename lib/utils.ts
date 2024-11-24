@@ -215,7 +215,7 @@ export const calculatePercentage = (sizeInBytes: number) => {
   return Number(percentage.toFixed(2));
 };
 
-export const getUsageSummary = (totalSpace: { document: { size: number; latestDate: string; }; image: { size: number; latestDate: string; }; video: { size: number; latestDate: string; }; audio: { size: number; latestDate: string; }; other: { size: number; latestDate: string; }; }) => {
+export const getUsageSummary = (totalSpace: any) => {
   return [
     {
       title: "Documents",

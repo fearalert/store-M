@@ -107,6 +107,13 @@ export const loginUser = async ({ email }: { email: string }) => {
 
   export const getCurrentUser = async () => {
     try {
+      const sessionCookie = (await cookies()).get("appwrite-session");
+  
+      if (!sessionCookie) {
+        console.log("No session cookie found.");
+        return null;
+      }
+  
       const { databases, account } = await createSessionClient();
   
       const result = await account.get();
@@ -117,13 +124,18 @@ export const loginUser = async ({ email }: { email: string }) => {
         [Query.equal("accountId", result.$id)],
       );
   
-      if (user.total <= 0) return null;
+      if (user.total <= 0) {
+        console.log("No user found for this account ID.");
+        return null;
+      }
   
       return parseStringify(user.documents[0]);
     } catch (error) {
-      console.log(error);
+      handleError(error, "Failed to fetch current user");
+      return null;
     }
   };
+  
 
 export const logOutUser = async () => {
   const {account} = await createSessionClient();
