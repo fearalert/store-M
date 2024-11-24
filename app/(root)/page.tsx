@@ -16,6 +16,8 @@ const Dashboard = async () => {
 
   const usageSummary = getUsageSummary(totalSpace);
 
+  console.log("Dattataauogxucgsk",usageSummary);
+
   return (
     <div className="flex w-full sm:max-w-7xl md:max-w-7xl lg:max-w-[80vw] xl:max-w-[80vw] flex-col items-start justify-start gap-8">
         <h1 className='text-3xl font-bold'>{"Dashboard".toLocaleUpperCase()}</h1>
@@ -40,7 +42,7 @@ const Dashboard = async () => {
 
                     <h5 className="font-bold text-xl relative z-20 text-start">{summary.title}</h5>
                     <Separator className="bg-slate-400 w-full" />
-                    <span className='text-text-half text-sm font-normal'>{formatDateTime(summary.$updatedAt)}</span>
+                    <span className='text-text-half text-sm font-normal'>{formatDateTime(summary.latestDate)}</span>
                 </div>
                 </Link>
             ))}
@@ -69,7 +71,6 @@ const Dashboard = async () => {
                         <p className="w-full text-light-100 sm:max-w-[200px] lg:max-w-[250px] text-half font-bold">{file.name}</p>
                         <span className='text-text-half text-sm font-normal'>{formatDateTime(file.$createdAt)}</span>
                     </div>
-                    {/* <ActionDropdown file={file} /> */}
                     </div>
                 </Link>
                 ))}

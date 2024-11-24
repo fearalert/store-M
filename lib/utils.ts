@@ -212,7 +212,7 @@ export const constructDownloadUrl = (bucketFileId: string) => {
 };
 
 export const calculatePercentage = (sizeInBytes: number) => {
-  const totalSizeInBytes = 2 * 1024 * 1024 * 1024;
+  const totalSizeInBytes = 10 * 1024 * 1024 * 1024;
   const percentage = (sizeInBytes / totalSizeInBytes) * 100;
   return Number(percentage.toFixed(2));
 };
