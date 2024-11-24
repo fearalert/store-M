@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react"
-import { useRouter } from "next/navigation"
+import { redirect } from "next/navigation"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -29,7 +29,7 @@ const OTPModal = ({
     accountId: string;
     email: string;
   }) => {
-    const router = useRouter();
+    // const router = useRouter();
     const [isOpen, setIsOpen] = useState<boolean>(true);
     const [password, setPassword] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -45,7 +45,7 @@ const OTPModal = ({
     
         if (sessionId) {
           console.log("Redirecting to home...");
-          router.push("/");
+          return redirect("/");
         } else {
           console.log("Session ID not found, cannot redirect.");
         }
