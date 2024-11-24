@@ -2,7 +2,7 @@ import DropdownFile from '@/components/dynamicroute/DropdownFile';
 import SortComponent from '@/components/SortComponent';
 import Thumbnail from '@/components/Thumbnail';
 import { getFiles } from '@/lib/actions/files.actions';
-import { convertFileSize, formatDateTime, getFileParams, getFileType } from '@/lib/utils';
+import { convertFileSize, formatDateTime, getFileParams, getFileType, getUsageSummary } from '@/lib/utils';
 import Link from 'next/link';
 import { Models } from "node-appwrite";
 
@@ -24,7 +24,7 @@ const DynamicPage = async({searchParams, params}: SearchParmsProps) => {
                 <h1 className='text-3xl font-bold'>{type.toLocaleUpperCase()}</h1>
                 <div className='flex mt-2 flex-col justify-between sm:flex-row sm:items-center'>
                     <p className='text-text-half font-bold'>
-                        Total: <span className='text-text-half text-opacity-80 font-semibold'>{convertFileSize(files.total.size)}</span>
+                        Total: <span className='text-text-half text-opacity-80 font-semibold'>{"0 MB"}</span>
                     </p>
                     
                     <div className='mt-5 flex items-center sm:mt-0 sm:gap-3'>

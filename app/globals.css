@@ -62,5 +62,5 @@
 
 
 .page-container-css {
-  @apply mx-auto flex w-full sm:max-w-7xl md:max-w-7xl lg:max-w-[80vw] xl:max-w-[80vw] flex-col items-center gap-8 !important;
+  @apply mx-auto flex w-full sm:max-w-7xl md:max-w-7xl lg:max-w-[80vw] xl:max-w-[80vw] flex-col items-start justify-start gap-8 !important;
 }
