@@ -85,8 +85,9 @@ export const getFileIcon = (
     case "xls":
     case "xlsx":
       return "/assets/icons/file-document.svg";
-    // Image
     case "svg":
+    case "gif":
+    case "png":
       return "/assets/icons/file-image.svg";
     // Video
     case "mkv":
@@ -137,7 +138,7 @@ export const getFileParams = (fileType: string) => {
       return["image"];
     case "media":
       return["video", "audio"];
-    case "other":
+    case "others":
       return["other"];
     default:
       break;
@@ -211,7 +212,7 @@ export const constructDownloadUrl = (bucketFileId: string) => {
 };
 
 export const calculatePercentage = (sizeInBytes: number) => {
-  const totalSizeInBytes = 2 * 1024 * 1024 * 1024; // 2GB in bytes
+  const totalSizeInBytes = 2 * 1024 * 1024 * 1024;
   const percentage = (sizeInBytes / totalSizeInBytes) * 100;
   return Number(percentage.toFixed(2));
 };
@@ -222,14 +223,14 @@ export const getUsageSummary = (totalSpace: any) => {
       title: "Documents",
       size: totalSpace.document.size,
       latestDate: totalSpace.document.latestDate,
-      icon: icons.File,
+      icon: "/assets/icons/file-document.svg",
       url: "/documents",
     },
     {
       title: "Images",
       size: totalSpace.image.size,
       latestDate: totalSpace.image.latestDate,
-      icon: icons.Image,
+      icon: "/assets/icons/file-image.svg",
       url: "/images",
     },
     {
@@ -239,14 +240,14 @@ export const getUsageSummary = (totalSpace: any) => {
         totalSpace.video.latestDate > totalSpace.audio.latestDate
           ? totalSpace.video.latestDate
           : totalSpace.audio.latestDate,
-      icon: icons.Video,
+      icon: "/assets/icons/file-audio.svg",
       url: "/media",
     },
     {
       title: "Others",
       size: totalSpace.other.size,
       latestDate: totalSpace.other.latestDate,
-      icon: icons.Webcam,
+      icon: "/assets/icons/file-other.svg",
       url: "/others",
     },
   ];

@@ -46,7 +46,7 @@ export const Chart = ({ used = 0 }: { used: number }) => {
               gridType="circle"
               radialLines={false}
               stroke="none"
-              className="first:fill-white/20 last:fill-primary"
+              className="first:fill-white last:fill-primary"
               polarRadius={[86, 74]}
             />
             <RadialBar dataKey="storage" background cornerRadius={10} />
@@ -76,7 +76,7 @@ export const Chart = ({ used = 0 }: { used: number }) => {
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
-                          className="fill-white/70"
+                          className="fill-white"
                         >
                           Space used
                         </tspan>
@@ -90,8 +90,8 @@ export const Chart = ({ used = 0 }: { used: number }) => {
         </ChartContainer>
       </CardContent>
       <CardHeader className="flex-1 items-start px-3 py-0 sm:px-5 lg:p-3 xl:pr-5">
-        <CardTitle className="h3 font-bold md:text-center lg:text-left">Available Storage</CardTitle>
-        <CardDescription className="mt-2 w-full text-white/70 md:text-center lg:text-left">
+        <CardTitle className="text-3xl font-bold md:text-center lg:text-left">Available Storage</CardTitle>
+        <CardDescription className="mt-2 w-full text-white font-bold md:text-center lg:text-left">
           {used ? convertFileSize(used) : "2GB"} / 2GB
         </CardDescription>
       </CardHeader>

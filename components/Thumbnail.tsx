@@ -17,7 +17,7 @@ export const Thumbnail = ({
   imageClassName,
   className,
 }: Props) => {
-  const isImage = type === "image" && extension !== "svg";
+  const isImage = type === "image" && !extension;
 
   return (
     <figure className={cn("thumbnail", className)}>
@@ -27,7 +27,7 @@ export const Thumbnail = ({
         width={80}
         height={80}
         className={cn(
-          "size- object-contain",
+          "size-full object-contain",
           imageClassName,
           isImage && "size-full object-cover object-center",
         )}

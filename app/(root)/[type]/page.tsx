@@ -1,8 +1,8 @@
 import DropdownFile from '@/components/dynamicroute/DropdownFile';
 import SortComponent from '@/components/SortComponent';
 import Thumbnail from '@/components/Thumbnail';
-import { getFiles } from '@/lib/actions/files.actions';
-import { convertFileSize, formatDateTime, getFileParams, getFileType, getUsageSummary } from '@/lib/utils';
+import { getFiles, getTotalSpaceUsed } from '@/lib/actions/files.actions';
+import { convertFileSize, formatDateTime, getFileParams, getUsageSummary } from '@/lib/utils';
 import Link from 'next/link';
 import { Models } from "node-appwrite";
 
@@ -17,6 +17,8 @@ const DynamicPage = async({searchParams, params}: SearchParmsProps) => {
     const types = getFileParams(type) as FileType[];
 
     const files = await getFiles({ types, searchText, sort });
+
+    const totalSpace = await getTotalSpaceUsed();
 
     return (
         <div className='page-container-css'>
@@ -36,7 +38,6 @@ const DynamicPage = async({searchParams, params}: SearchParmsProps) => {
                 </div>
             </section>
 
-            {/* Render Files here */}
            {files.total > 0 ? (
                 <section className='grid w-full gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4'>
                         {files.documents.map((file: Models.Document) => (

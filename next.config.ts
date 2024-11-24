@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
       } 
   },
   images: {
-    domains: ['th.bing.com'],
+    domains: ['th.bing.com', 'cloud.appwrite.io'],
   },
 };
 
