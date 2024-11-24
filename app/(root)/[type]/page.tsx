@@ -8,18 +8,15 @@ import { Models } from "node-appwrite";
 
 import React from 'react'
 
-const DynamicPage = async({params}: SearchParmsProps) => {
+const DynamicPage = async({searchParams, params}: SearchParmsProps) => {
 
-    const type = ((await params).type as string) || "";
+    const type = ((await params)?.type as string) || "";
+    const searchText = ((await searchParams)?.query as string) || "";
+    const sort = ((await searchParams)?.sort as string) || "";
 
-    const files = await getFiles();
+    const types = getFileParams(type) as FileType[];
 
-    const validTypes = getFileParams(type);
-
-    const filteredFiles = files.documents.filter((file: Models.Document) => {
-        const { fileType } = getFileType(file.name);
-        return validTypes?.includes(fileType);
-      });
+    const files = await getFiles({ types, searchText, sort });
 
     return (
         <div className='page-container-css'>
@@ -27,11 +24,11 @@ const DynamicPage = async({params}: SearchParmsProps) => {
                 <h1 className='text-3xl font-bold'>{type.toLocaleUpperCase()}</h1>
                 <div className='flex mt-2 flex-col justify-between sm:flex-row sm:items-center'>
                     <p className='text-text-half font-bold'>
-                        Total: <span className='text-text-half text-opacity-80 font-semibold'>0 MB</span>
+                        Total: <span className='text-text-half text-opacity-80 font-semibold'>{convertFileSize(files.total.size)}</span>
                     </p>
                     
                     <div className='mt-5 flex items-center sm:mt-0 sm:gap-3'>
-                        <p className='hidden sm:block text-text-half'>
+                        <p className='hidden sm:block text-text-half w-full'>
                             Sort By:
                         </p>
                         <SortComponent />
@@ -40,10 +37,10 @@ const DynamicPage = async({params}: SearchParmsProps) => {
             </section>
 
             {/* Render Files here */}
-           {filteredFiles.length > 0 ? (
+           {files.total > 0 ? (
                 <section className='grid w-full gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4'>
-                        {filteredFiles.map((file: Models.Document) => (
-                            <div key={file.$id} className='flex flex-col gap-4 px-4 py-8 bg-white rounded-md w-full'>
+                        {files.documents.map((file: Models.Document) => (
+                            <div key={file.$id} className='flex flex-col gap-4 px-4 py-8 bg-white rounded-2xl shadow-md shadow-slate-200 w-full'>
                                 <div className='flex flex-row text-center justify-between gap-8'>
                                         <Link href={file.url} target="_blank">
                                             <Thumbnail type={file.type} extension={file.extension} url={file.url}/>

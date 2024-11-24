@@ -46,7 +46,7 @@ const MobileNavigation = ({$id:ownerId, fullName, email, avatar, accountId}: Mob
               />
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger><MenuIcon /></SheetTrigger>
-        <SheetContent className="w-[400px] flex flex-col justify-start items-start">
+        <SheetContent className="w-[400px] xs:w-[360px] flex flex-col justify-start items-start">
             <SheetTitle className=" bg-primary w-full my-2 px-4 rounded-lg">
             <div className="flex flex-row items-center justify-center gap-6 my-2">
               <Image

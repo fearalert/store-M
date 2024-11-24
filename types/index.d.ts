@@ -1,4 +1,4 @@
-
+declare type FileType = "document" | "image" | "video" | "audio" | "other";
 
 declare interface UploadFileProps {
     file: File;
@@ -33,5 +33,12 @@ declare interface DropdownAction {
     fileId: string;
     bucketFileId: string;
     path: string;
+  }
+
+  declare interface GetFilesProps {
+    types: FileType[];
+    searchText?: string;
+    sort?: string;
+    limit?: number;
   }
   

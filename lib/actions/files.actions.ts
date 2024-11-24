@@ -57,7 +57,12 @@ export const uploadFile = async ({
     }
   };
 
-export const getFiles = async ()=> {
+export const getFiles = async ({
+  types = [],
+  searchText = "",
+  sort = "$createdAt-desc",
+  limit,
+}:GetFilesProps)=> {
   const { databases } = await createAdminClient();
 
   try{
@@ -65,7 +70,7 @@ export const getFiles = async ()=> {
 
     if(!currentUser) throw new Error("User not found.");
 
-    const queries = createQueries(await currentUser);
+    const queries = createQueries(await currentUser, types, searchText, sort, limit);
 
     const files = await databases.listDocuments(
       appwriteConfig.databaseId,

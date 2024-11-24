@@ -91,7 +91,6 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
 
     const path = usePathname();
 
-
     const closeAllModals = () => {
       setisModalOpen(false);
       setisDropdownOpen(false);
@@ -135,7 +134,6 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
 
 
     const renderDialog = () => {
-
       if(!action) return null;
 
       const { value, label } = action;
@@ -191,6 +189,12 @@ const DropdownFile = ({file}: {file: Models.Document}) => {
               <ShareInput file={file} onInputChange={setEmails} onRemove={handleRemoveUser} />
             )
           }
+          {value === "delete" && (
+            <p className="text-text-half font-bold">
+              Are you sure you want to delete{` `}
+              <span className="text-accent-red">{file.name}</span>?
+            </p>
+          )}
         </DialogHeader>
         {["rename", "delete", "share"].includes(value) && (
           <DialogFooter className="flex flex-col gap-3 md:flex-row w-full">
