@@ -1,3 +1,5 @@
+"use server";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Models } from "node-appwrite";
@@ -7,6 +9,8 @@ import { convertFileSize, formatDateTime, getUsageSummary } from "@/lib/utils";
 import { getFiles, getTotalSpaceUsed } from "@/lib/actions/files.actions";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Chart } from "@/components/dashboard/Chart";
+import { getCurrentUser } from "@/lib/actions/user.action";
+import UploadFiles from "@/components/UploadFiles";
 
 const Dashboard = async () => {
   const [files, totalSpace] = await Promise.all([
@@ -16,7 +20,9 @@ const Dashboard = async () => {
 
   const usageSummary = getUsageSummary(totalSpace);
 
-  console.log("Dattataauogxucgsk",usageSummary);
+  const currentUser = await getCurrentUser();
+
+  const { ownerId, accountId } = currentUser;
 
   return (
     <div className="flex w-full sm:max-w-7xl md:max-w-7xl lg:max-w-[80vw] xl:max-w-[80vw] flex-col items-start justify-start gap-8">
@@ -81,7 +87,17 @@ const Dashboard = async () => {
                 ))}
             </ul>
             ) : (
-            <p className="empty-list">No files uploaded</p>
+            <div className="flex flex-col items-center justify-center space-y-6 my-12">
+                <Image
+                    src="/file.png"
+                    alt="files-not-available"
+                    width={200}
+                    height={200}
+                    className="transition-all hover:rotate-2 hover:scale-105"
+                />
+                <p className="text-accent-red font-semibold">No files uploaded</p>
+                <UploadFiles ownerId={ownerId} accountId={accountId} className={'w-[280px] hover:bg-secondary'} />
+            </div>
             )}
         </section>
 

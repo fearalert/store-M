@@ -62,9 +62,6 @@ const Header = ({avatar, userId, accountId, email}: HeaderProps) => {
               <div>
                 <strong>Email:</strong> {email}
               </div>
-              {/* <div>
-                <strong>Account ID:</strong> {accountId}
-              </div> */}
               <div>
                 <strong>User ID:</strong> {userId}
               </div>
