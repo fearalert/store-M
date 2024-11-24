@@ -37,24 +37,25 @@ const OTPModal = ({
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       setIsLoading(true);
-  
-      console.log({ accountId, password });
-  
+    
       try {
         const sessionId = await verifySecret({ accountId, password });
-
-        console.log("Session-ID");
-
+    
         console.log({ sessionId });
-  
-        if (sessionId) router.push("/");
+    
+        if (sessionId) {
+          console.log("Redirecting to home...");
+          router.push("/");
+        } else {
+          console.log("Session ID not found, cannot redirect.");
+        }
       } catch (error) {
-        console.log("Failed to verify OTP", error);
+        console.error("Failed to verify OTP", error);
+      } finally {
+        setIsLoading(false);
       }
-  
-      setIsLoading(false);
     };
-  
+    
     const handleResendOtp = async () => {
       await sendEmailOTP({ email });
     };
