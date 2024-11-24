@@ -89,8 +89,11 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
           console.log("account id", accountId);
         }
         console.log("account id", accountId);
-      } catch {
-        setError("Failed to create account. Please try again.");
+      } catch (error) {
+        console.log(error)
+        const errorMessage =
+          error instanceof Error ? error.message : "Something went wrong. Please try again.";
+        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
@@ -199,7 +202,7 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
 
           </Button>
 
-          {error && <p className="error-message">*{error}</p>}
+          {error && <p className="text-accent-red">*{error}</p>}
 
           <div className="body-2 flex justify-center">
             <p className="text-text-half">

@@ -9,62 +9,76 @@ import { cookies } from "next/headers";
 import { parseStringify } from "../utils";
 import { redirect } from "next/navigation";
 
-export const createUserAccount = async ({ fullName, email }: 
-    { fullName: string; email: string }) => {
-   
-      const existingUser = await getUserByEmail(email);
-
-      if (existingUser) {
-        throw new Error("User already exists.");
-      }
-    
-    
-      const accountId = await sendEmailOTP({ email });
-      if (!accountId) {
-        throw new Error("Failed to send an OTP");
-      }
-    
-      const { databases } = await createAdminClient();
-    
-      const userDocument = await databases.createDocument(
-        appwriteConfig.databaseId,
-        appwriteConfig.usersCollectionId,
-        ID.unique(),
-        {
-          fullName,
-          email,
-          avatar: defaultAvatarUrl,
-          accountId,
-        }
-      );
-    
-      return {
-        id: userDocument.$id,
-        fullName: userDocument.fullName,
-        email: userDocument.email,
-        accountId: parseStringify(userDocument.accountId),
-        avatar: userDocument.avatar,
-      };
-    };
-
-export const loginUser = async ({ email }: { email: string }) => {
-    
-  try{
+export const createUserAccount = async ({
+  fullName,
+  email,
+}: {
+  fullName: string;
+  email: string;
+}) => {
+  try {
     const existingUser = await getUserByEmail(email);
 
-  
-    // User exists, send OTP
     if (existingUser) {
-      await sendEmailOTP({ email });
-      return parseStringify({ accountId: existingUser.accountId });
+      throw new Error("User already exists.");
     }
 
-    return parseStringify({ accountId: null, error: "User not found" });
-  } catch (error) {
-    handleError(error, "Failed to sign in user");
-  }
-}
+    const accountId = await sendEmailOTP({ email });
+    if (!accountId) {
+      throw new Error("Failed to send an OTP.");
+    }
 
+    const { databases } = await createAdminClient();
+
+    const userDocument = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.usersCollectionId,
+      ID.unique(),
+      {
+        fullName,
+        email,
+        avatar: defaultAvatarUrl,
+        accountId,
+      }
+    );
+
+    return {
+      id: userDocument.$id,
+      fullName: userDocument.fullName,
+      email: userDocument.email,
+      accountId: parseStringify(userDocument.accountId),
+      avatar: userDocument.avatar,
+    };
+  } catch (error) {
+    throw new Error(
+      `CreateUserAccountError: ${
+        error instanceof Error ? error.message : "Unknown error occurred"
+      }`
+    );
+  }
+};
+
+
+export const loginUser = async ({ email }: { email: string }) => {
+      try {
+        const existingUser = await getUserByEmail(email);
+    
+        if (!existingUser) {
+          throw new Error("User not found.");
+        }
+    
+        // User exists, send OTP
+        await sendEmailOTP({ email });
+        return parseStringify({ accountId: existingUser.accountId });
+      } catch (error) {
+        throw new Error(
+          `LoginUserError: ${
+            error instanceof Error ? error.message : "Unknown error occurred"
+          }`
+        );
+      }
+    };
+    
   export const verifySecret = async ({
     accountId,
     password,
