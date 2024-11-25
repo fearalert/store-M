@@ -63,5 +63,5 @@
 
 
 .page-container-css {
-  @apply mx-auto pb-12 sm:mb-4 xs:mb-8 h-full flex w-full sm:max-w-7xl md:max-w-7xl lg:max-w-[80vw] xl:max-w-[80vw] flex-col items-start justify-start gap-8 !important;
+  @apply mx-auto pb-12 sm:mb-4 xs:mb-2 md:mb-4 lg:mb-6 xl:mb-6 h-full flex w-full sm:max-w-7xl md:max-w-7xl lg:max-w-[80vw] xl:max-w-[80vw] flex-col items-start justify-start gap-8 !important;
 }

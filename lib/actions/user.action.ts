@@ -99,7 +99,8 @@ export const loginUser = async ({ email }: { email: string }) => {
         secure: isProduction,     
       });
   
-      return parseStringify({ sessionId: session.$id });
+      // return parseStringify({ sessionId: session.$id });
+      return session.$id;
     } catch (error) {
       handleError(error, "Failed to verify OTP");
     }
