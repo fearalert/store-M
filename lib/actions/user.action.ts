@@ -83,6 +83,8 @@ export const loginUser = async ({ email }: { email: string }) => {
     try {
       console.log("Before", accountId);
 
+      const isProduction = process.env.NODE_ENV === "production";
+
       accountId = accountId.replace(/^"|"$/g, "");
       console.log("dgbfewggfueh");
       console.log(accountId);
@@ -93,8 +95,8 @@ export const loginUser = async ({ email }: { email: string }) => {
       (await cookies()).set("appwrite-session", session.secret, {
         path: "/",
         httpOnly: true,
-        sameSite: "none",
-        secure: true,
+        sameSite: isProduction ? "none" : "lax",
+        secure: isProduction,     
       });
   
       return parseStringify({ sessionId: session.$id });

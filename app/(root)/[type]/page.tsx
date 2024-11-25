@@ -14,6 +14,8 @@ const DynamicPage = async({searchParams, params}: SearchParmsProps) => {
     const searchText = ((await searchParams)?.query as string) || "";
     const sort = ((await searchParams)?.sort as string) || "";
 
+
+    console.log("Type", type);
     const types = getFileParams(type) as FileType[];
 
     const files = await getFiles({ types, searchText, sort });
