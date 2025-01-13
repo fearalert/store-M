@@ -128,15 +128,20 @@ export const loginUser = async ({ email }: { email: string }) => {
   
 
 export const logOutUser = async () => {
-  const {account} = await createSessionClient();
+  const { account } = await createSessionClient();
 
-  try{
+  try {
     await account.deleteSession("current");
-    (await cookies()).delete('appwrite-session');
-
-  }catch (error) {
+    (await cookies()).delete("appwrite-session", {
+      path: "/",
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
+  } catch (error) {
     handleError(error, "Failed to sign out user");
+    throw new Error("Logout failed. Please try again.");
   } finally {
     redirect("/auth/login");
   }
-}
+};
