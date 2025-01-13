@@ -22,22 +22,29 @@ export const getUserByEmail = async (email: string) => {
 
 
 export const handleError = (error: unknown, message: string) => {
-    console.log(error, message);
+  console.error("Internal Error:", error);
 
-    throw error; 
-}
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(message); // Hide detailed errors in production
+  } else {
+    throw error; // Keep detailed errors in development
+  }
+};
 
 
-export const sendEmailOTP = async ({email}:{email: string}) => {
-    const {account} = await createAdminClient();
+export const sendEmailOTP = async ({ email }: { email: string }) => {
+  const { account } = await createAdminClient();
 
-    try{
-        const session = await account.createEmailToken(ID.unique(), email);
-        return session.userId;
-    } catch(error){
-        handleError(error, "Failed to send OTP");
-    }
-}
+  try {
+    // Then send the OTP for email verification
+    const emailToken = await account.createEmailToken(user.$id, email);
+    console.log("Email verification token created:", emailToken);
+
+    return user.$id;
+  } catch (error) {
+    handleError(error, "Failed to send OTP");
+  }
+};
 
 export const createQueries = (
   currentUser: Models.Document,
