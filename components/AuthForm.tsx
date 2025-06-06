@@ -57,6 +57,8 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [accountId, setAccountId] = useState<number | null>(null);
+    const [showOtpModal, setShowOtpModal] = useState(false);
+
 
     const router = useRouter();
 
@@ -75,17 +77,17 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
       setError("");
   
       try {
-        if(type === "register"){
+        if (type === "register") {
           const user = await createUserAccount({
             fullName: values.fullName || "",
             email: values.email,
           });
           setAccountId(user.accountId);
-          console.log("account id", accountId);
+          setShowOtpModal(true); // trigger modal
         } else {
           const user = await loginUser({ email: values.email });
           setAccountId(user.accountId);
-          console.log("account id", accountId);
+          setShowOtpModal(true); // trigger modal
         }
         console.log("account id", accountId);
       } catch (error) {
@@ -219,8 +221,8 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
           </div>
         </form>
       </Form>
-      {accountId && (
-        <OTPModal email={form.getValues("email")} accountId={JSON.stringify(accountId)} />
+      {showOtpModal && accountId && (
+        <OTPModal email={email} accountId={String(accountId)} />
       )}
     </>
   );
