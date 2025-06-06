@@ -75,17 +75,17 @@ const AuthForm = ({type}: {type: AuthFormtype}) => {
       setError("");
   
       try {
+        let user;
         if (type === "register") {
-          const user = await createUserAccount({
+          user = await createUserAccount({
             fullName: values.fullName || "",
             email: values.email,
           });
-          setAccountId(user.accountId);
         } else {
-          const user = await loginUser({ email: values.email });
-          setAccountId(user.accountId);
+          user = await loginUser({ email: values.email });
         }
-        console.log("account id", accountId);
+        setAccountId(user.accountId);
+        console.log("account id from response:", user.accountId);  // Log from response, NOT state
       } catch (error) {
         console.log(error)
         const errorMessage =
