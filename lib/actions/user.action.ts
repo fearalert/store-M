@@ -8,9 +8,9 @@ import { defaultAvatarUrl } from "@/constants/constants";
 import { cookies } from "next/headers";
 import { parseStringify } from "../utils";
 import { redirect } from "next/navigation";
- 
-  
- export const createUserAccount = async ({
+
+
+export const createUserAccount = async ({
   fullName,
   email,
 }: {
@@ -18,20 +18,20 @@ import { redirect } from "next/navigation";
   email: string;
 }) => {
   try {
-    
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
-      throw new Error("User already exists.");
+      console.log("User already exists.");
+      return null;
     }
-  
-  
+
     const accountId = await sendEmailOTP({ email });
     if (!accountId) {
-      throw new Error("Failed to send an OTP");
+      console.log("Failed to send an OTP");
+      return null;
     }
-  
+
     const { databases } = await createAdminClient();
-  
+
     await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.usersCollectionId,
@@ -43,105 +43,104 @@ import { redirect } from "next/navigation";
         accountId,
       }
     );
-  
+
     return parseStringify({ accountId });
   } catch (error) {
-    throw new Error(
-      `CreateUserAccountError: ${
-        error instanceof Error ? error.message : "Unknown error occurred"
-      }`
+    console.error(
+      "CreateUserAccountError:",
+      error instanceof Error ? error.message : "Unknown error occurred"
     );
+    return null;
   }
 };
 
 
 export const loginUser = async ({ email }: { email: string }) => {
-      try {
-        const existingUser = await getUserByEmail(email);
+  try {
+    const existingUser = await getUserByEmail(email);
 
-        if (existingUser) {
-          await sendEmailOTP({ email });
-          return parseStringify({ accountId: existingUser.accountId });
-        }
-        return parseStringify({ accountId: null, error: "User not found" });
-      } catch (error) {
-        throw new Error(
-          `LoginUserError: ${
-            error instanceof Error ? error.message : "Unknown error occurred"
-          }`
-        );
-      }
-    };
-    
-  export const verifySecret = async ({
-    accountId,
-    password,
-  }: {
-    accountId: string;
-    password: string;
-  }) => {
-    try {
-      console.log("Before", accountId);
-
-      const isProduction = process.env.NODE_ENV === "production";
-
-      accountId = accountId.replace(/^"|"$/g, "");
-      console.log("dgbfewggfueh");
-      console.log(accountId);
-      const { account } = await createAdminClient();
-  
-      const session = await account.createSession(accountId, password);
-  
-      (await cookies()).set("appwrite-session", session.secret, {
-        path: "/",
-        httpOnly: true,
-        sameSite: isProduction ? "none" : "lax",
-        secure: isProduction,     
-      });
-  
-      // return parseStringify({ sessionId: session.$id });
-      return session.$id;
-    } catch (error) {
-      handleError(error, "Failed to verify OTP");
+    if (existingUser) {
+      await sendEmailOTP({ email });
+      return parseStringify({ accountId: existingUser.accountId });
     }
-  };
-  
-  export const getCurrentUser = async () => {
-    try {
-      const { databases, account } = await createSessionClient();
-  
-      const result = await account.get();
-  
-      const user = await databases.listDocuments(
-        appwriteConfig.databaseId,
-        appwriteConfig.usersCollectionId,
-        [Query.equal("accountId", result.$id)],
-      );
-  
-      if (user.total <= 0) return null;
-  
-      return parseStringify(user.documents[0]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
+    return parseStringify({ accountId: null, error: "User not found" });
+  } catch (error) {
+    console.error(
+      "LoginUserError:",
+      error instanceof Error ? error.message : "Unknown error occurred"
+    );
+    return parseStringify({ accountId: null, error: "Login failed" });
+  }
+};
+
+
+export const verifySecret = async ({
+  accountId,
+  password,
+}: {
+  accountId: string;
+  password: string;
+}) => {
+  try {
+    const isProduction = process.env.NODE_ENV === "production";
+
+    accountId = accountId.replace(/^"|"$/g, "");
+
+    const { account } = await createAdminClient();
+    const session = await account.createSession(accountId, password);
+
+    cookies().set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: isProduction ? "none" : "lax",
+      secure: isProduction,
+    });
+
+    return session.$id;
+  } catch (error) {
+    handleError(error, "Failed to verify OTP");
+    return null;
+  }
+};
+
+
+export const getCurrentUser = async () => {
+  try {
+    const { databases, account } = await createSessionClient();
+
+    const result = await account.get();
+
+    const user = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.usersCollectionId,
+      [Query.equal("accountId", result.$id)]
+    );
+
+    if (user.total <= 0) return null;
+
+    return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.error("getCurrentUserError:", error);
+    return null;
+  }
+};
+
 
 export const logOutUser = async () => {
   const { account } = await createSessionClient();
 
   try {
     await account.deleteSession("current");
-    (await cookies()).delete("appwrite-session", {
+
+    cookies().delete("appwrite-session", {
       path: "/",
       httpOnly: true,
       sameSite: "none",
       secure: true,
     });
+
+    redirect("/auth/login");
   } catch (error) {
     handleError(error, "Failed to sign out user");
-    throw new Error("Logout failed. Please try again.");
-  } finally {
-    redirect("/auth/login");
   }
 };
